@@ -1,0 +1,253 @@
+﻿using System;
+using System.IO;
+
+using System.Collections;
+using System.Collections.Generic;
+
+namespace JAvaCode
+{
+	class req
+	{
+		public static void Main(string[] args)
+		{
+
+			string path = "/Users/noufalrasheed/Desktop/cdata.csv";
+			// string outputPath = "/Users/noufalrasheed/Desktop/algorithoutput.txt";
+			//StreamWriter writetext = new StreamWriter(outputPath);
+			int[] output = new int[4];
+			output = InputRequest();
+			foreach (var x in output)
+			{
+				Console.Write(x + "\t");
+			}
+
+			int[] output2 = new int[3];
+			output2 = readRecord(output[0].ToString(), path, output[1], output[2], output[3]);
+			Console.WriteLine("\n\n result");
+			foreach (var x in output2)
+			{
+				Console.Write(x + "\t");
+			}
+
+
+		}
+
+		public static int[] InputRequest() //throws FileNotFoundException 
+		{
+
+			int Input;
+			//int[] output;
+			//int number = 0;
+			int search2 = 0;
+			int type1 = 0;
+			int type2 = 0;
+			int type3 = 0;
+			bool repeat = true;
+			Console.Write("Please Enter Your Zip Code: "); // enter zipcode
+			Input = Convert.ToInt32(Console.ReadLine());
+			// Console.WriteLine("Please Enter Request Type : \n Enter 1 for Ambulance \n Enter 2 for Fire Truck \n Enter 3 for Police car \n Enter 0 when you finshr");
+			//search2 = Convert.ToInt32(Console.ReadLine());
+
+
+
+			// user input request type
+
+			while (repeat)
+			{
+				Console.WriteLine("Please Enter Request Type : \n Enter 1 for Ambulance \n Enter 2 for Fire Truck \n Enter 3 for Police car \n Enter 0 when you finshr");
+				search2 = Convert.ToInt32(Console.ReadLine());
+				if (search2 == 1)
+				{ // first type 
+
+					Console.WriteLine("How many veihcle you need ");
+					type1 = Convert.ToInt32(Console.ReadLine());
+
+				}
+				else if (search2 == 2)
+				{ // second type
+					Console.WriteLine("How many veihcle you need ");
+					type2 = Convert.ToInt32(Console.ReadLine());
+				}
+				else if (search2 == 3)
+				{ //Third type
+					Console.WriteLine("How many veihcle you need ");
+					type3 = Convert.ToInt32(Console.ReadLine());
+				}
+				else if (search2 == 0)
+				{
+					Console.WriteLine("Wait Your Request will process ");
+					Console.WriteLine("Your Request is \n" + type1 + "  Ambulance \n" + type2 + " Fire Truck \n" + type3 + "  Police car   ");
+					repeat = false;
+				}
+				else
+				{
+					Console.WriteLine("Please Enter Correct request ");// this if user input not one of the 3 types
+
+				}
+
+			}
+
+
+			return new int[] { Input, type1, type2, type3 };
+
+		}
+
+
+
+		public static int[] readRecord(String address, String path, int vehicleType1, int vehicleType2, int vehicleType3)
+		{
+			//string outputPath = "/Users/noufalrasheed/Desktop/algorithoutput.txt";
+			//StreamWriter writetext = new StreamWriter("/Users/noufalrasheed/Desktop/AlgoOut.txt");
+
+
+			bool found = false;
+			String ZipCode = "";
+			String Ambulance = "";
+			String FireTruck = "";
+			String Policecar = "";
+			String VehicalID = "";
+			int count1 = 0;
+			int count2 = 0;
+			int count3 = 0;
+			String vehicleType2String = "" + vehicleType2;
+
+
+			//makeFile Object = new makeFile();
+
+			using (StreamReader sr = new StreamReader(path))
+			{
+				string line = sr.ReadLine();
+				//incase if you want to ignore the header
+				while (line != null && !found)
+				{
+					string[] strCols = line.Split(',');
+					line = sr.ReadLine();
+					ZipCode = strCols[0];
+					Ambulance = strCols[1];
+					FireTruck = strCols[2];
+					Policecar = strCols[3];
+					VehicalID = strCols[4];
+					if (ZipCode == address)
+					{
+
+						found = true;
+					}
+				}
+			}
+
+
+			if (found)
+			{
+
+				Console.WriteLine("ZipCode :  " + ZipCode + "  Ambulance :  " + Ambulance + "   FireTruck :  " + FireTruck + "  Policecar :  " + Policecar);
+
+
+				if (vehicleType1 >= 1)
+				{
+
+					int Type1 = Convert.ToInt32(Ambulance);
+
+					if (Type1 >= vehicleType1)
+					{
+
+
+						Console.WriteLine(" Your ZipCode is :  " + ZipCode + "  \n  Your Request is: Ambulance :  " + vehicleType1 + " \n  Your VehicalID  is:  " + VehicalID + " \n Massage");
+
+
+
+					}
+
+					else
+
+					{
+						count1 = vehicleType1 - Type1;
+
+						Console.WriteLine("call algorithm Ambulance  " + count1);
+
+					}
+
+
+				} //end of type 1
+
+
+				if (vehicleType2 >= 1)
+				{
+
+					int Type2 = Convert.ToInt32(FireTruck);
+
+					if (Type2 >= vehicleType2)
+					{
+						Console.WriteLine(" Your ZipCode is :  " + ZipCode + "  \n  Your Request is: FireTruck :  " + vehicleType2String + " \n  Your VehicalID  is:  " + VehicalID + " \n Massage");
+
+						//writetext.WriteLine(ZipCode, "0", vehicleType2String, "0", VehicalID);
+						//  Object.writeRecord(ZipCode, "0", vehicleType2String, "0", VehicalID);
+
+					}
+
+					else
+
+					{
+						count2 = vehicleType2 - Type2;
+
+
+						Console.WriteLine("call algorithm FireTruck " + count2);
+
+					}
+
+				} //end of type 2
+
+
+				if (vehicleType3 >= 1)
+				{
+
+
+					int Type3 = Convert.ToInt32(Policecar);
+
+					if (Type3 >= vehicleType3)
+					{
+						Console.WriteLine(" Your ZipCode is :  " + ZipCode + "  \n  Your Request is: Policecar :  " + vehicleType3 + " \n  Your VehicalID  is:  " + VehicalID + " \n Massage");
+
+
+
+					}
+
+					else
+
+					{
+						count3 = vehicleType3 - Type3;
+
+						Console.WriteLine("call algorithm Policecar " + count3);
+
+
+					}
+
+
+				} //end of type 3
+
+			}///if(found)
+
+
+			else
+			{
+
+				Console.WriteLine("Zip Code not found ");
+			}
+
+			return new int[] { count1, count2, count3 };
+
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+	}
+}
